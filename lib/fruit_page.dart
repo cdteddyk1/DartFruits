@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'main.dart';
+import 'fruit.dart';
 class FruitPage extends StatelessWidget {
   const FruitPage({
     Key? key,
     required this.fruit,
     required this.onAddToCart,
+    required this.onAddFruit,
   }) : super(key: key);
 
   final Fruit fruit;
   final void Function(double) onAddToCart;
+  final Function(int) onAddFruit;
   
   // ...
 
@@ -38,6 +40,8 @@ class FruitPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 onAddToCart(fruit.price);
+                  onAddToCart(fruit.price);
+                  fruit.quantity++;
               },
               child: const Text('Add to Cart'),
             ),
