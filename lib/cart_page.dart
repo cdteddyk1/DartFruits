@@ -24,9 +24,24 @@ class CartPage extends StatelessWidget {
  final List<Fruit> filteredFruits = fruits.where((fruits) => fruits.quantity > 0).toList();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cart'),
-      ),
+        appBar: AppBar(
+                title: Row(
+                  children: [
+                    const Expanded(
+                      child: Text(
+                        'Montant du Panier  :  ',
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        ' ${totalPrice.toStringAsFixed(2)} €',
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
       body: filteredFruits.isEmpty
           ? const Center(
               child: Text('Your cart is empty'),
@@ -49,50 +64,6 @@ class CartPage extends StatelessWidget {
                 );
               },
             ),
-      bottomNavigationBar: BottomAppBar(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Total: \$${totalPrice.toStringAsFixed(2)}'),
-              ElevatedButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Confirmation'),
-                        content: const Text('Are you sure you want to checkout?'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('CANCEL'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Checkout successful'),
-                                ),
-                              );
-                            },
-                            child: const Text('CHECKOUT'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                child: const Text('Checkout'),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

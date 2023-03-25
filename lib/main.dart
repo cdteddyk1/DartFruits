@@ -82,7 +82,7 @@ class _MyAppState extends State<MyApp> {
 
   void removeFruit(int index) {
     setState(() {
-      _totalPrice -= _fruits[index].price * _fruits[index].quantity;
+      _totalPrice -= _fruits[index].price;
       _fruits[index].quantity--;
     });
   }
