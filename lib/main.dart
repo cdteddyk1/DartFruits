@@ -122,7 +122,7 @@ class _MyAppState extends State<MyApp> {
                           
                            leading: Image.asset(
                            
-                        'fruits/${fruit.name.toLowerCase().replaceAll(r'è', 'e')}.png'
+                        'fruits/${fruit.image}'
                         
                       ,
                         width: 32),
