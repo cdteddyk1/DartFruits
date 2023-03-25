@@ -7,15 +7,17 @@ class Fruit {
   final String name;
   final Color color;
   final double price;
-  final int index;
+  final String saison;
   int quantity;
+  final int index;
+
 
   Fruit({
     required this.name,
     required this.color,
     required this.price,
-
-    required this.index,
+    required this.saison,
     this.quantity = 0,
+    required this.index,
   });
 }

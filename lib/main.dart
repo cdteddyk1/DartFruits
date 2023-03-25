@@ -23,37 +23,46 @@ class _MyAppState extends State<MyApp> {
         name: 'Pomme',
         color: const Color.fromARGB(255, 255, 0, 0),
         price: 2.5,
-        index: 0),
+        index: 0,
+        saison: 'hiver',
+        ),
     Fruit(
         name: 'Orange',
         color: const Color.fromARGB(255, 255, 165, 0),
         price: 1.7,
-        index: 1),
+        index: 1,
+        saison: 'été'),
+
     Fruit(
         name: 'Ananas',
         color: const Color.fromARGB(255, 255, 255, 0),
         price: 1.9,
-        index: 2),
+        index: 2,
+        saison: 'automne'),
     Fruit(
         name: 'Fraise',
         color: const Color.fromARGB(255, 255, 0, 0),
         price: 1.1,
-        index: 3),
+        index: 3,
+        saison: 'printemps'),
     Fruit(
         name: 'Kiwi',
         color: const Color.fromARGB(255, 139, 195, 74),
         price: 1.5,
-        index: 4),
+        index: 4,
+        saison: 'été'),
     Fruit(
         name: 'Poire',
         color: const Color.fromARGB(255, 173, 255, 47),
         price: 3.0,
-        index: 5),
+        index: 5,
+        saison: 'hiver'),
     Fruit(
         name: 'Mangue',
         color: const Color.fromARGB(255, 255, 193, 37),
         price: 2.8,
-        index: 6),
+        index: 6,
+        saison: 'été'),
   ];
 
   double _totalPrice = 0.0;
@@ -86,6 +95,7 @@ class _MyAppState extends State<MyApp> {
       color: fruit.color,
       price: fruit.price,
       quantity: fruit.quantity,
+      saison: fruit.saison,
     );
   }
 

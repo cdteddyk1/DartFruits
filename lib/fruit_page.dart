@@ -35,7 +35,6 @@ class _FruitPageState extends State<FruitPage> {
             Expanded(
               child: Image.asset(
                 'fruits/${widget.fruit.name.toLowerCase()}.png',
-                fit: BoxFit.contain,
               ),
             ),
             const SizedBox(height: 16),
@@ -43,6 +42,7 @@ class _FruitPageState extends State<FruitPage> {
               'Price: ${widget.fruit.price.toStringAsFixed(2)}',
               style: const TextStyle(fontSize: 20),
             ),
+            Text('Saison: ${widget.fruit.saison}', style: const TextStyle(fontSize: 20),),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
