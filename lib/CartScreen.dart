@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'fruit.dart';
 
-class CartPage extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   final List<Fruit> fruits;
   final double totalPrice;
   final Function(double) onRemoveFromTotalPrice;
-  final Function(int, Fruit ) onRemoveFruit;
+  final Function(int, Fruit) onRemoveFruit;
   final Function() remoteAllFruit;
 
-  const CartPage({
+    const CartScreen({
     Key? key,
     required this.fruits,
     required this.totalPrice,
@@ -18,11 +18,15 @@ class CartPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    // Filter the fruits list to only include those with a quantity greater than zero
-    final List<Fruit> filteredFruits =
-        fruits.where((fruit) => fruit.quantity > 0).toList();
+  State<CartScreen> createState() => _CartScreenState();
+}
 
+class _CartScreenState extends State<CartScreen> {
+  @override
+  Widget build(BuildContext context) {
+
+    final List<Fruit> filteredFruits =
+    widget.fruits.where((fruit) => fruit.quantity > 0).toList();
     return Scaffold(
       appBar: AppBar(
                 title: Row(
@@ -35,14 +39,14 @@ class CartPage extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        ' ${totalPrice.toStringAsFixed(2)}  €',
+                        '${widget.totalPrice} €',
                         textAlign: TextAlign.left,
                       ),
                     ),
                     Expanded(
                       child: IconButton(
                         onPressed: () {
-                          remoteAllFruit();
+                          widget.remoteAllFruit();
                         },
                         icon: const Icon(Icons.delete),
                       ),
@@ -66,7 +70,7 @@ class CartPage extends StatelessWidget {
                   title: Text('${fruit.name} ${fruit.quantity} x'),
                   trailing: IconButton(
                     onPressed: () {
-                      onRemoveFruit( index, fruit);
+                      widget.onRemoveFruit( index, fruit);
                     },
                     icon: const Icon(Icons.remove_circle),
                   ),

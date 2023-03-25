@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'fruit.dart';
 
-class FruitPage extends StatefulWidget {
-  const FruitPage({
+class FruitPreview extends StatefulWidget {
+  const FruitPreview({
     Key? key,
     required this.fruit,
     required this.onAddFruit,
@@ -13,10 +13,10 @@ class FruitPage extends StatefulWidget {
   final Function(int, Fruit,double) onAddFruit;
 
   @override
-  State<StatefulWidget> createState() => _FruitPageState();
+  State<StatefulWidget> createState() => _FruitPreviewState();
 }
 
-class _FruitPageState extends State<FruitPage> {
+class _FruitPreviewState extends State<FruitPreview> {
   int _quantity = 0;
 
   @override
