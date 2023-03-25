@@ -26,7 +26,6 @@ Future<List<Fruit>> fetchFruits() async {
 
     return fruits;
   } catch (error) {
-    print(error);
     throw Exception('Failed to load fruits');
   }
 }
