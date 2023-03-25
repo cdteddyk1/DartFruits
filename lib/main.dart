@@ -129,6 +129,7 @@ class _MyAppState extends State<MyApp> {
                 itemBuilder: (BuildContext context, int index) {
                   final fruit = _fruits[index];
                   return ListTile(
+                    
                     leading: Image.asset(
                         'fruits/${fruit.name.toLowerCase()}.png',
                         width: 32),
@@ -144,6 +145,7 @@ class _MyAppState extends State<MyApp> {
                         ),
                       ],
                     ),
+                    tileColor: fruit.color,
                     onTap: () {
                       Navigator.push(
                         context,
