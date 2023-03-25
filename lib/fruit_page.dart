@@ -6,16 +6,14 @@ class FruitPage extends StatefulWidget {
     Key? key,
     required this.fruit,
     required this.onAddFruit,
-    required this.addToTotalPrice,
     
   }) : super(key: key);
 
   final Fruit fruit;
-  final Function(int) onAddFruit;
-  final Function(double, int) addToTotalPrice;
+  final Function(int, Fruit,double) onAddFruit;
 
   @override
-  _FruitPageState createState() => _FruitPageState();
+  State<StatefulWidget> createState() => _FruitPageState();
 }
 
 class _FruitPageState extends State<FruitPage> {
@@ -42,14 +40,14 @@ class _FruitPageState extends State<FruitPage> {
               'Price: ${widget.fruit.price.toStringAsFixed(2)}',
               style: const TextStyle(fontSize: 20),
             ),
-            Text('Saison: ${widget.fruit.saison}', style: const TextStyle(fontSize: 20),),
+            Text('Saison: ${widget.fruit.season}', style: const TextStyle(fontSize: 20),),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 setState(() {
                   _quantity++;
-                  widget.onAddFruit(widget.fruit.index);
-                  widget.addToTotalPrice(widget.fruit.price, widget.fruit.index);
+                  widget.onAddFruit(widget.fruit.id, widget.fruit, widget.fruit.price);
+
                 });
               },
               child: const Text('Add to Cart'),
