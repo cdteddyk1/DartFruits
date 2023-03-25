@@ -52,9 +52,10 @@ class _MyAppState extends State<MyApp> {
 
   double _totalPrice = 0.0;
 
-    void addToTotalPrice(double price, Fruit fruit) {
+    void addToTotalPrice(double price, int index) {
       setState(() {
         _totalPrice += price;
+        _fruits[index].quantity++;
       });
     }
     void removeFromTotalPrice(double price) {
@@ -63,11 +64,7 @@ class _MyAppState extends State<MyApp> {
       });
     }
 
-    addFruit(int index) {
-      setState(() {
-        _fruits[index].quantity++;
-      });
-    }
+
 
     void removeFruit(int index) {
       setState(() {
@@ -83,7 +80,7 @@ class _MyAppState extends State<MyApp> {
         name: fruit.name,
         color: fruit.color,
         price: fruit.price,
-        quantity: fruit.quantity + 1,
+        quantity: fruit.quantity,
       );
     }
 

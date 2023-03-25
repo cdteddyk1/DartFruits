@@ -12,7 +12,7 @@ class FruitPage extends StatefulWidget {
 
   final Fruit fruit;
   final Function(int) onAddFruit;
-  final Function(double, Fruit) addToTotalPrice;
+  final Function(double, int) addToTotalPrice;
 
   @override
   _FruitPageState createState() => _FruitPageState();
@@ -48,9 +48,8 @@ class _FruitPageState extends State<FruitPage> {
               onPressed: () {
                 setState(() {
                   _quantity++;
-                  
                   widget.onAddFruit(widget.fruit.index);
-                  
+                  widget.addToTotalPrice(widget.fruit.price, widget.fruit.index);
                 });
               },
               child: const Text('Add to Cart'),
