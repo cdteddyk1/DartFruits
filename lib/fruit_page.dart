@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
 import 'fruit.dart';
-class FruitPage extends StatelessWidget {
+
+class FruitPage extends StatefulWidget {
   const FruitPage({
     Key? key,
     required this.fruit,
-    required this.onAddToCart,
     required this.onAddFruit,
+    
   }) : super(key: key);
 
   final Fruit fruit;
-  final void Function(double) onAddToCart;
   final Function(int) onAddFruit;
-  
-  // ...
+
+  @override
+  _FruitPageState createState() => _FruitPageState();
+}
+
+class _FruitPageState extends State<FruitPage> {
+  int _quantity = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(fruit.name),
+        title: Text(widget.fruit.name),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -27,23 +32,29 @@ class FruitPage extends StatelessWidget {
           children: [
             Expanded(
               child: Image.asset(
-                'fruits/${fruit.name.toLowerCase()}.png',
+                'fruits/${widget.fruit.name.toLowerCase()}.png',
                 fit: BoxFit.contain,
               ),
             ),
             const SizedBox(height: 16),
             Text(
-              'Price: ${fruit.price.toStringAsFixed(2)}',
+              'Price: ${widget.fruit.price.toStringAsFixed(2)}',
               style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                onAddToCart(fruit.price);
-                  onAddToCart(fruit.price);
-                  fruit.quantity++;
+                setState(() {
+                  _quantity++;
+                  widget.onAddFruit(widget.fruit.index);
+                });
               },
               child: const Text('Add to Cart'),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Quantity: $_quantity',
+              style: const TextStyle(fontSize: 20),
             ),
           ],
         ),

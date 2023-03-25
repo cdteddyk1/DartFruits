@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'fruit.dart';
 
-class CartPage extends StatelessWidget {
-  
-   final List<Fruit> fruits;
-  final double totalPrice;
 
+class CartPage extends StatelessWidget {
+  final List<Fruit> fruits;
+  final double totalPrice;
   final Function(double) onRemoveFromTotalPrice;
   final Function(int) onRemoveFruit;
 
-  const CartPage({
+  const CartPage(
+    {
+     
     Key? key,
     required this.fruits,
     required this.totalPrice,
@@ -20,7 +21,7 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Filter the fruits list to only include those with a quantity greater than zero
- final List<Fruit> filteredFruits = fruits.where((fruit) => fruit.quantity > 0).toList();
+ final List<Fruit> filteredFruits = fruits.where((fruits) => fruits.quantity > 0).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -28,20 +29,20 @@ class CartPage extends StatelessWidget {
       ),
       body: filteredFruits.isEmpty
           ? const Center(
-              child: Text('Votre panier est vide'),
+              child: Text('Your cart is empty'),
             )
           : ListView.builder(
               itemCount: filteredFruits.length,
               itemBuilder: (BuildContext context, int index) {
-                final fruit = filteredFruits[index];
+                final fruits = filteredFruits[index];
                 return ListTile(
-                  leading: Image.asset('fruits/${fruit.name.toLowerCase()}.png',
+                  leading: Image.asset('fruits/${fruits.name.toLowerCase()}.png',
                       width: 32),
-                  title: Text('${fruit.name} ${fruit.quantity} x'),
+                  title: Text('${fruits.name} ${fruits.quantity} x'),
                   trailing: IconButton(
                     onPressed: () {
-                      onRemoveFruit(index);
-                      onRemoveFromTotalPrice(fruit.price * fruit.quantity);
+                      onRemoveFruit(fruits.index);
+                      onRemoveFromTotalPrice(fruits.price * fruits.quantity);
                     },
                     icon: const Icon(Icons.remove_circle),
                   ),
