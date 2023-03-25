@@ -18,7 +18,7 @@ class MyApp extends StatefulWidget {
 
 Future<List<Fruit>> fetchFruits() async {
   try {
-    final response = await Dio().get('https://fruits.shrp.dev/items/fruits');
+    final response = await Dio().get('https://fruits.shrp.dev/items/fruits?fields=*.*');
     final List<Map<String, dynamic>> fruitsJson =
         List<Map<String, dynamic>>.from(response.data['data']);
     List<Fruit> fruits =
