@@ -6,6 +6,7 @@ class CartPage extends StatelessWidget {
   final double totalPrice;
   final Function(double) onRemoveFromTotalPrice;
   final Function(int, Fruit ) onRemoveFruit;
+  final Function() remoteAllFruit;
 
   const CartPage({
     Key? key,
@@ -13,6 +14,7 @@ class CartPage extends StatelessWidget {
     required this.totalPrice,
     required this.onRemoveFromTotalPrice,
     required this.onRemoveFruit,
+    required this.remoteAllFruit,
   }) : super(key: key);
 
   @override
@@ -23,23 +25,31 @@ class CartPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            const Expanded(
-              child: Text(
-                'Montant du Panier  :  ',
-                textAlign: TextAlign.right,
+                title: Row(
+                  children: [
+                    const Expanded(
+                      child: Text(
+                        'Prix total  :  ',
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        ' ${totalPrice.toStringAsFixed(2)}  €',
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Expanded(
+                      child: IconButton(
+                        onPressed: () {
+                          remoteAllFruit();
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Text(
-                ' ${totalPrice.toStringAsFixed(2)} €',
-                textAlign: TextAlign.left,
-              ),
-            ),
-          ],
-        ),
-      ),
       body: filteredFruits.isEmpty
           ? const Center(
               child: Text('Your cart is empty'),
@@ -56,7 +66,7 @@ class CartPage extends StatelessWidget {
                   title: Text('${fruit.name} ${fruit.quantity} x'),
                   trailing: IconButton(
                     onPressed: () {
-                      onRemoveFruit(fruit.id, fruit);
+                      onRemoveFruit( index, fruit);
                     },
                     icon: const Icon(Icons.remove_circle),
                   ),

@@ -53,6 +53,15 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void remoteAllFruit() {
+    setState(() {
+      _totalPrice = 0;
+      for (var fruit in _fruits) {
+        fruit.quantity = 0;
+      }
+    });
+  }
+
   void removeFruit(int index, Fruit fruit) {
     setState(() {
       _totalPrice -= fruit.price;
@@ -163,6 +172,7 @@ class _MyAppState extends State<MyApp> {
               totalPrice: _totalPrice,
               onRemoveFromTotalPrice: removeFromTotalPrice,
               onRemoveFruit: removeFruit,
+              remoteAllFruit: remoteAllFruit,
             ),
       },
     );
