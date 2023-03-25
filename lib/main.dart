@@ -119,6 +119,13 @@ class _MyAppState extends State<MyApp> {
                       itemBuilder: (BuildContext context, int index) {
                         final fruit = _fruits[index];
                         return ListTile(
+                          
+                           leading: Image.asset(
+                           
+                        'fruits/${fruit.name.toLowerCase().replaceAll(r'è', 'e')}.png'
+                        
+                      ,
+                        width: 32),
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -143,7 +150,7 @@ class _MyAppState extends State<MyApp> {
                               ),
                             );
                           },
-                        );
+                        ); 
                       },
                     ),
               bottomNavigationBar: BottomNavigationBar(
