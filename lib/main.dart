@@ -51,18 +51,12 @@ class _MyAppState extends State<MyApp> {
   ];
 
   double _totalPrice = 0.0;
-  void addToCartFruit(Fruit fruit) {
-    setState(() {
-      _fruits.add(fruit);
-    });
-    addToTotalPrice(fruit.price, fruit);
-  }
+
     void addToTotalPrice(double price, Fruit fruit) {
       setState(() {
         _totalPrice += price;
       });
     }
-
     void removeFromTotalPrice(double price) {
       setState(() {
         _totalPrice -= price;
@@ -126,6 +120,7 @@ class _MyAppState extends State<MyApp> {
                             builder: (context) => FruitPage(
                               fruit: fruit,
                               onAddFruit: onAddFruit,
+                              addToTotalPrice: addToTotalPrice,
                             ),
                           ),
                         );
