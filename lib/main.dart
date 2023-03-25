@@ -3,6 +3,7 @@ import 'dart:math';
 import 'cart_page.dart';
 import 'fruit_page.dart';
 import 'fruit.dart';
+import 'package:dio/dio.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,62 +16,34 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
+Future<List<Fruit>> fetchFruits() async {
+  try {
+    final response = await Dio().get('https://fruits.shrp.dev/items/fruits');
+    final List<Map<String, dynamic>> fruitsJson =
+        List<Map<String, dynamic>>.from(response.data['data']);
+    List<Fruit> fruits =
+        fruitsJson.map((fruitJson) => Fruit.fromJson(fruitJson)).toList();
+
+    return fruits;
+  } catch (error) {
+    print(error);
+    throw Exception('Failed to load fruits');
+  }
+}
+
 class _MyAppState extends State<MyApp> {
   final random = Random();
   int currentIndex = 0;
-  final List<Fruit> _fruits = [
-    Fruit(
-        name: 'Pomme',
-        color: const Color.fromARGB(255, 255, 0, 0),
-        price: 2.5,
-        index: 0,
-        saison: 'hiver',
-        ),
-    Fruit(
-        name: 'Orange',
-        color: const Color.fromARGB(255, 255, 165, 0),
-        price: 1.7,
-        index: 1,
-        saison: 'été'),
-
-    Fruit(
-        name: 'Ananas',
-        color: const Color.fromARGB(255, 255, 255, 0),
-        price: 1.9,
-        index: 2,
-        saison: 'automne'),
-    Fruit(
-        name: 'Fraise',
-        color: const Color.fromARGB(255, 255, 0, 0),
-        price: 1.1,
-        index: 3,
-        saison: 'printemps'),
-    Fruit(
-        name: 'Kiwi',
-        color: const Color.fromARGB(255, 139, 195, 74),
-        price: 1.5,
-        index: 4,
-        saison: 'été'),
-    Fruit(
-        name: 'Poire',
-        color: const Color.fromARGB(255, 173, 255, 47),
-        price: 3.0,
-        index: 5,
-        saison: 'hiver'),
-    Fruit(
-        name: 'Mangue',
-        color: const Color.fromARGB(255, 255, 193, 37),
-        price: 2.8,
-        index: 6,
-        saison: 'été'),
-  ];
 
   double _totalPrice = 0.0;
 
-  void addToTotalPrice(double price, int index) {
+  List<Fruit> _fruits = [];
+  bool _isLoading = true;
+
+  void addToTotalPrice(double price, Fruit fruit) {
     setState(() {
       _totalPrice += price;
-      _fruits[index].quantity++;
+      fruit.quantity++;
     });
   }
 
@@ -80,23 +53,38 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void removeFruit(int index) {
+  void remoteAllFruit() {
     setState(() {
-      _totalPrice -= _fruits[index].price * _fruits[index].quantity;
-      _fruits[index].quantity--;
+      _totalPrice = 0;
+      for (var fruit in _fruits) {
+        fruit.quantity = 0;
+      }
     });
   }
 
-  void onAddFruit(int index) {
-    final fruit = _fruits[index];
-    _fruits[index] = Fruit(
-      index: fruit.index,
-      name: fruit.name,
-      color: fruit.color,
-      price: fruit.price,
-      quantity: fruit.quantity,
-      saison: fruit.saison,
-    );
+  void removeFruit(int index, Fruit fruit) {
+    setState(() {
+      _totalPrice -= fruit.price;
+      fruit.quantity--;
+    });
+  }
+
+  void onAddFruit(int index, Fruit fruit,double price) {
+    setState(() {
+      _totalPrice += fruit.price;
+      fruit.quantity++;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFruits().then((fruits) {
+      setState(() {
+        _fruits = fruits;
+        _isLoading = false;
+      });
+    });
   }
 
   @override
@@ -124,45 +112,57 @@ class _MyAppState extends State<MyApp> {
                   ],
                 ),
               ),
-              body: ListView.builder(
-                itemCount: _fruits.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final fruit = _fruits[index];
-                  return ListTile(
-                    leading: Image.asset(
-                        'fruits/${fruit.name.toLowerCase()}.png',
+              body: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      itemCount: _fruits.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final fruit = _fruits[index];
+                        return ListTile(
+                          
+                           leading: Image.asset(
+                           
+                        'fruits/${fruit.image}'
+                        
+                      ,
                         width: 32),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('${fruit.name} ${_fruits[index].quantity} x'),
-                        IconButton(
-                          icon: const Icon(Icons.shopping_cart),
-                          onPressed: () {
-                            addToTotalPrice(fruit.price, index);
-                          },
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FruitPage(
-                            fruit: fruit,
-                            onAddFruit: onAddFruit,
-                            addToTotalPrice: addToTotalPrice,
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('${fruit.name} ${fruit.quantity} x'),
+                              IconButton(
+                                icon: const Icon(Icons.shopping_cart),
+                                onPressed: () {
+                                  addToTotalPrice(fruit.price, fruit);
+                                },
+                              ),
+                            ],
                           ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+                          tileColor: fruit.color,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FruitPage(
+                                  fruit: fruit,
+                                  onAddFruit: onAddFruit,
+                                ),
+                              ),
+                            );
+                          },
+                        ); 
+                      },
+                    ),
               bottomNavigationBar: BottomNavigationBar(
                 currentIndex: currentIndex,
                 onTap: (int index) {
-                  Navigator.pushNamed(context, '/panier');
+                  if (index == 1) {
+                    Navigator.pushNamed(context, '/panier');
+                  } else {
+                    setState(() {
+                      currentIndex = index;
+                    });
+                  }
                 },
                 items: const [
                   BottomNavigationBarItem(
@@ -179,6 +179,7 @@ class _MyAppState extends State<MyApp> {
               totalPrice: _totalPrice,
               onRemoveFromTotalPrice: removeFromTotalPrice,
               onRemoveFruit: removeFruit,
+              remoteAllFruit: remoteAllFruit,
             ),
       },
     );
