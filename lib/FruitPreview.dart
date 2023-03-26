@@ -18,7 +18,6 @@ class FruitPreview extends StatefulWidget {
 }
 
 class _FruitPreviewState extends State<FruitPreview> {
-  int _quantity = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +85,6 @@ class _FruitPreviewState extends State<FruitPreview> {
                       ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            _quantity++;
                             widget.onAddFruit(widget.fruit.id, widget.fruit,
                                 widget.fruit.price);
                           });
