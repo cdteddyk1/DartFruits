@@ -3,6 +3,6 @@ Projet de création d'une application de ventes de fruits
 
 Teddy / CLEMENT DELS 
 
-TP 5 fini 
+TP 6 fini 
 
-Actuellement au TP6
+Actuellement au TP7
