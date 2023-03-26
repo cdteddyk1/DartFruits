@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'CartScreen.dart';
-import 'FruitPreview.dart';
+import 'cartscreen.dart';
+import 'fruitpreview.dart';
 import 'fruit.dart';
 import 'package:dio/dio.dart';
 
