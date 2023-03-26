@@ -5,4 +5,4 @@ Teddy / CLEMENT DELS
 
 TP 7 fini 
 
-Actuellement au TP8
+Actuellement au TP8 Inscription fini / bloqué à la connection
