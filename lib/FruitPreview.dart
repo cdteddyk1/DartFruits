@@ -42,7 +42,7 @@ class _FruitPreviewState extends State<FruitPreview> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
+                  
                 Image.asset(
                   'fruits/${widget.fruit.name.toLowerCase()}.png',
                 ),
@@ -52,12 +52,12 @@ class _FruitPreviewState extends State<FruitPreview> {
                   child: Column(
 
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround ,
 
                     children: [
 
                       Text(
-                        'Price: ${widget.fruit.price.toStringAsFixed(2)}',
+                        'Origin: ${widget.fruit.origin.name }',
                         style: const TextStyle(fontSize: 20),
                       ),
 
@@ -65,6 +65,21 @@ class _FruitPreviewState extends State<FruitPreview> {
                         'Saison: ${widget.fruit.season}',
                         style: const TextStyle(fontSize: 20),
                         textAlign: TextAlign.right,
+                      ),
+
+                      Text(
+                        'Stock: ${widget.fruit.stock.toStringAsFixed(2)}',
+                        style: const TextStyle(fontSize: 20),
+                      ),
+
+                      Text(
+                        "Tarif à l'unité : ${widget.fruit.price.toStringAsFixed(2)}",
+                        style: const TextStyle(fontSize: 20),
+                      ),
+
+                      Text(
+                        "Quantité : ${widget.fruit.quantity}",
+                        style: const TextStyle(fontSize: 20),
                       ),
 
                       const SizedBox(height: 16),
@@ -106,7 +121,7 @@ class _FruitPreviewState extends State<FruitPreview> {
                 ],
 
                 children: [
-                  
+
                   TileLayer(
                     urlTemplate:
                         'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
