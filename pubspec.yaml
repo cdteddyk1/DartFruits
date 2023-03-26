@@ -32,6 +32,8 @@ dependencies:
     sdk: flutter
   dio: ^5.0.3
   http: ^0.13.5
+  flutter_map: ^3.1.0
+  latlong2: ^0.8.0
 
   cupertino_icons: ^1.0.2
 

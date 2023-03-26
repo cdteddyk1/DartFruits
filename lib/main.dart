@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'cart_page.dart';
-import 'fruit_page.dart';
+import 'CartScreen.dart';
+import 'FruitPreview.dart';
 import 'fruit.dart';
 import 'package:dio/dio.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatefulWidget {
 
 Future<List<Fruit>> fetchFruits() async {
   try {
-    final response = await Dio().get('https://fruits.shrp.dev/items/fruits');
+    final response = await Dio().get('https://fruits.shrp.dev/items/fruits?fields=*.*');
     final List<Map<String, dynamic>> fruitsJson =
         List<Map<String, dynamic>>.from(response.data['data']);
     List<Fruit> fruits =
@@ -68,7 +69,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void onAddFruit(int index, Fruit fruit,double price) {
+  void onAddFruit(int index, Fruit fruit, double price) {
     setState(() {
       _totalPrice += fruit.price;
       fruit.quantity++;
@@ -108,6 +109,25 @@ class _MyAppState extends State<MyApp> {
                         textAlign: TextAlign.left,
                       ),
                     ),
+                    Expanded(
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CartScreen(
+                                      fruits: _fruits,
+                                      totalPrice: _totalPrice,
+                                      onRemoveFromTotalPrice:
+                                          removeFromTotalPrice,
+                                      onRemoveFruit: removeFruit,
+                                      remoteAllFruit: remoteAllFruit,
+                                    )),
+                          );
+                        },
+                        icon: const Icon(Icons.shopping_cart),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -118,13 +138,8 @@ class _MyAppState extends State<MyApp> {
                       itemBuilder: (BuildContext context, int index) {
                         final fruit = _fruits[index];
                         return ListTile(
-                          
-                           leading: Image.asset(
-                           
-                        'fruits/${fruit.image}'
-                        
-                      ,
-                        width: 32),
+                          leading:
+                              Image.asset('fruits/${fruit.image}', width: 32),
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -142,43 +157,16 @@ class _MyAppState extends State<MyApp> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => FruitPage(
+                                builder: (context) => FruitPreview(
                                   fruit: fruit,
                                   onAddFruit: onAddFruit,
                                 ),
                               ),
                             );
                           },
-                        ); 
+                        );
                       },
                     ),
-              bottomNavigationBar: BottomNavigationBar(
-                currentIndex: currentIndex,
-                onTap: (int index) {
-                  if (index == 1) {
-                    Navigator.pushNamed(context, '/panier');
-                  } else {
-                    setState(() {
-                      currentIndex = index;
-                    });
-                  }
-                },
-                items: const [
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.home), label: 'Accueil'),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.shopping_cart),
-                    label: 'Panier',
-                  ),
-                ],
-              ),
-            ),
-        '/panier': (context) => CartPage(
-              fruits: _fruits,
-              totalPrice: _totalPrice,
-              onRemoveFromTotalPrice: removeFromTotalPrice,
-              onRemoveFruit: removeFruit,
-              remoteAllFruit: remoteAllFruit,
             ),
       },
     );
