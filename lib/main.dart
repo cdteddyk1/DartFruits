@@ -33,7 +33,9 @@ Future<List<Fruit>> fetchFruits() async {
 
 class _MyAppState extends State<MyApp> {
   final random = Random();
+  int _selectedSeasonIndex = 0;
   int currentIndex = 0;
+    var season = ['Toutes les saisons', 'Eté','Printemps' , 'Automne', 'Hiver'];
 
   double _totalPrice = 0.0;
 
@@ -87,88 +89,118 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fruits',
-      initialRoute: '/',
-      routes: {
-        '/': (context) => Scaffold(
-              appBar: AppBar(
-                title: Row(
-                  children: [
-                    const Expanded(
-                      child: Text(
-                        'Prix total  :  ',
-                        textAlign: TextAlign.right,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        ' ${_totalPrice.toStringAsFixed(2)}  €',
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                    Expanded(
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CartScreen(
-                                      fruits: _fruits,
-                                      totalPrice: _totalPrice,
-                                      onRemoveFromTotalPrice:
-                                          removeFromTotalPrice,
-                                      onRemoveFruit: removeFruit,
-                                      remoteAllFruit: remoteAllFruit,
-                                    )),
-                          );
-                        },
-                        icon: const Icon(Icons.shopping_cart),
-                      ),
-                    ),
-                  ],
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    title: 'Fruits',
+    initialRoute: '/',
+    routes: {
+      '/': (context) => Scaffold(
+        appBar: AppBar(
+          title: Row(
+            children: [
+              const Expanded(
+                child: Text(
+                  'Prix total  :  ',
+                  textAlign: TextAlign.right,
                 ),
               ),
-              body: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : ListView.builder(
-                      itemCount: _fruits.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final fruit = _fruits[index];
-                        return ListTile(
-                          leading:
-                              Image.asset('fruits/${fruit.image}', width: 32),
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('${fruit.name} ${fruit.quantity} x'),
-                              IconButton(
-                                icon: const Icon(Icons.shopping_cart),
-                                onPressed: () {
-                                  addToTotalPrice(fruit.price, fruit);
-                                },
-                              ),
-                            ],
+              Expanded(
+                child: Text(
+                  ' ${_totalPrice.toStringAsFixed(2)}  €',
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              Expanded(
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CartScreen(
+                          fruits: _fruits,
+                          totalPrice: _totalPrice,
+                          onRemoveFromTotalPrice: removeFromTotalPrice,
+                          onRemoveFruit: removeFruit,
+                          remoteAllFruit: remoteAllFruit,
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.shopping_cart),
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: _isLoading ? const Center(child: CircularProgressIndicator()) : Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const Text('Trier les fruits par : Saison'),
+                DropdownButton(
+                  items: [
+                    for (var i = 0; i < season.length; i++)
+                      DropdownMenuItem(
+                        value: i,
+                        child: Text(season[i]),
+                      )
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedSeasonIndex = value as int;
+                    });
+                  },
+                  value: _selectedSeasonIndex,
+                )
+              ],
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _fruits.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final fruit = _fruits[index];
+                  if (_selectedSeasonIndex == 0 || fruit.season == season[_selectedSeasonIndex]) {
+                    return ListTile(
+                      leading: Image.asset('fruits/${fruit.image}', width: 32),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('${fruit.name} ${fruit.quantity} x'),
+                          IconButton(
+                            icon: const Icon(Icons.shopping_cart),
+                            onPressed: () {
+                              addToTotalPrice(fruit.price, fruit);
+                            },
                           ),
-                          tileColor: fruit.color,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => FruitPreview(
-                                  fruit: fruit,
-                                  onAddFruit: onAddFruit,
-                                ),
-                              ),
-                            );
-                          },
+                        ],
+                      ),
+                      tileColor: fruit.color,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FruitPreview(
+                              fruit: fruit,
+                              onAddFruit: onAddFruit,
+                            ),
+                          ),
                         );
                       },
-                    ),
+                    );
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
             ),
-      },
-    );
-  }
+          ],
+        ),
+      ),
+    },
+  );
+}
+
 }
